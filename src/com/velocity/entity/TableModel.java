@@ -10,6 +10,14 @@ import java.util.List;
  */
 public class TableModel {
 
+	public String getTablePkname() {
+		return tablePkname;
+	}
+
+	public void setTablePkname(String tablePkname) {
+		this.tablePkname = tablePkname;
+	}
+
 	/**
 	 * 表名称
 	 */
@@ -34,6 +42,12 @@ public class TableModel {
 	 * 表注释
 	 */
 	public String tableDescription;
+	
+	/**
+	 * 主键列
+	 */
+	public String tablePkname;
+	
 
 	/**
 	 * column列表
@@ -92,5 +106,7 @@ public class TableModel {
 	public String toString() {
 		return "TableModel [tableName=" + tableName + ", tableClassName=" + tableClassName + ", tableInjectClassName=" + tableInjectClassName + ", tablePkName=" + tablePkName + ", tableDescription=" + tableDescription + ", columnList=" + columnList + "]";
 	}
+	
+	
 
 }

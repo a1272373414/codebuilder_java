@@ -3,28 +3,25 @@
 <sqlMap namespace="${modelName}-${injectClassName}">
 	<typeAlias alias="${tableClassName}DTO" type="${basepackage}.dto.${tableClassName}DTO" />
 	<resultMap id="${injectClassName}DTO" class="${tableClassName}DTO">
-		#foreach( $entity in $columnList)
+		#foreach( $columnModel in $columnList)
 		#if(${columnModel.javaType}=="Date")
-		<result column="${columnModel.column}" property="${columnModel.property}" javaType="java.util.${columnModel.javaType}" />
+		<result column="${columnModel.columnName}" property="${columnModel.property}" javaType="java.util.${columnModel.javaType}" />
 		#else
-		<result column="${columnModel.column}" property="${columnModel.property}" javaType="java.lang.${columnModel.javaType}" />
+		<result column="${columnModel.columnName}" property="${columnModel.property}" javaType="java.lang.${columnModel.javaType}" />
 		#end
 		#end
 	</resultMap>
 
 	<select id="get${tableClassName}List" resultMap="${injectClassName}DTO" parameterClass="java.util.Map">
 		SELECT
-		#foreach( $entity in $columnList)
-		#if($velocityCount==1)
-		${columnModel.column}
-		#else,${columnModel.column}
-		#end
-		#end
+			#foreach( $columnModel in $columnList)#if($velocityCount==1) ${columnModel.columnName}#else,${columnModel.columnName} #end#end
+		
 		FROM ${tableName}
 		WHERE 1=1
-		#foreach( $entity in $columnList)
+		
+		#foreach( $columnModel in $columnList)
 		<isNotEmpty prepend="and" property="${columnModel.property}">
-			${columnModel.column}=#${columnModel.property}#
+			${columnModel.columnName}=#${columnModel.property}#
 		</isNotEmpty>
 		#end
 		<isNotNull property="sortBy">
@@ -36,7 +33,7 @@
 			</isEqual>
 		</isNotNull>
 		<isNull property="sortBy">
-			ORDER BY ${pkName} DESC
+			ORDER BY ${tablePkname} DESC
 		</isNull>
 		<isNotEmpty property="pageNo">
 			<isNotEmpty property="pageSize">
@@ -47,9 +44,9 @@
 
 	<select id="get${tableClassName}Count" parameterClass="java.util.Map" resultClass="java.lang.Long">
 		SELECT COUNT(1) FROM ${tableName} WHERE 1=1
-		#foreach( $entity in $columnList)
+		#foreach( $columnModel in $columnList)
 		<isNotEmpty prepend="and" property="${columnModel.property}">
-			${columnModel.column}=#${columnModel.property}#
+			${columnModel.columnName}=#${columnModel.property}#
 		</isNotEmpty>
 		#end
 	</select>
@@ -57,16 +54,16 @@
 	<insert id="add${tableClassName}" parameterClass="${tableClassName}DTO">
 		INSERT INTO ${tableName}
 		<dynamic prepend="(">
-			#foreach( $entity in $columnList)
+			#foreach( $columnModel in $columnList)
 			<isNotNull prepend="," property="${columnModel.property}">
-				${columnModel.column}
+				${columnModel.columnName}
 			</isNotNull>
 			#end
 			)
 		</dynamic>
 		VALUES
 		<dynamic prepend="(">
-			#foreach( $entity in $columnList)
+			#foreach( $columnModel in $columnList)
 			<isNotNull prepend="," property="${columnModel.property}">
 				#${columnModel.property}#
 			</isNotNull>
@@ -81,16 +78,16 @@
 	<insert id="batchAdd${tableClassName}" parameterClass="${tableClassName}DTO">
 		INSERT INTO ${tableName}
 		<dynamic prepend="(">
-			#foreach( $entity in $columnList)
+			#foreach( $columnModel in $columnList)
 			<isNotNull prepend="," property="${columnModel.property}">
-				${columnModel.column}
+				${columnModel.columnName}
 			</isNotNull>
 			#end
 			)
 		</dynamic>
 		VALUES
 		<dynamic prepend="(">
-			#foreach( $entity in $columnList)
+			#foreach( $columnModel in $columnList)
 			<isNotNull prepend="," property="${columnModel.property}">
 				#${columnModel.property}#
 			</isNotNull>
@@ -113,10 +110,10 @@
 	<update id="update${tableClassName}" parameterClass="${tableClassName}DTO">
 		UPDATE ${tableName}
 		<dynamic prepend="set">
-			#foreach( $entity in $columnList)
-			#if(${columnModel.column}!=${pkName})
+			#foreach( $columnModel in $columnList)
+			#if(${columnModel.columnName}!=${tablePkname})
 			<isNotNull prepend="," property="${columnModel.property}">
-				${columnModel.column}= #${columnModel.property}#
+				${columnModel.columnName}= #${columnModel.property}#
 			</isNotNull>
 			#end
 			#end
@@ -126,12 +123,7 @@
 
 	<select id="get${tableClassName}ById" resultMap="${injectClassName}DTO" parameterClass="java.lang.Long">
 		SELECT
-		#foreach( $entity in $columnList)
-			#if($velocityCount==1)
-				${columnModel.column}
-			#else,${columnModel.column}
-			#end
-		#end
+			#foreach($columnModel in $columnList)#if($velocityCount==1) ${columnModel.columnName} #else,${columnModel.columnName} #end#end
 		FROM ${tableName}
 		WHERE ID = #id#
 	</select>

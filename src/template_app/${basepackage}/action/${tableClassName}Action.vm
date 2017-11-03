@@ -66,11 +66,11 @@ public class ${tableClassName}Action extends AbstractAction {
 				if (${injectClassName}List != null && ${injectClassName}List.size() > 0) {
 					for(int i = 0; i < ${injectClassName}List.size(); i++){
 						Map<Object, Object> ${injectClassName}Map = BeanMapUtils.getBean2Map(${injectClassName}List.get(i));
-						#foreach( $entity in $entityList )
-							#if(${entity.javaType} == "Date")
-							   if (StringUtil.hasText(StringUtil.trim(${injectClassName}Map.get("${entity.property}")))) {
-								String ${entity.property} = DateUtils.getDateStr((Date)${injectClassName}Map.get("${entity.property}"), "yyyy-MM-dd HH:mm:ss");
-								${injectClassName}Map.put("${entity.property}", ${entity.property});
+						#foreach( $columnModel in $columnList )
+							#if(${columnModel.javaType} == "Date")
+							   if (StringUtil.hasText(StringUtil.trim(${injectClassName}Map.get("${columnModel.property}")))) {
+								String ${columnModel.property} = DateUtils.getDateStr((Date)${injectClassName}Map.get("${columnModel.property}"), "yyyy-MM-dd HH:mm:ss");
+								${injectClassName}Map.put("${columnModel.property}", ${columnModel.property});
 							   }
 						    #end
 						#end
@@ -189,11 +189,11 @@ public class ${tableClassName}Action extends AbstractAction {
 				Long id = StringUtil.getAsLong(StringUtil.trim(condition.get("id")));
 				${tableClassName}DTO ${injectClassName}DTO = ${injectClassName}Manager.get${tableClassName}ById(id);
 				Map<Object,Object> ${injectClassName}Map = BeanMapUtils.getBean2Map(${injectClassName}DTO);
-				#foreach( $entity in $entityList )
-                #if(${entity.javaType} == "Date")
-                if (StringUtil.hasText(StringUtil.trim(${injectClassName}Map.get("${entity.property}")))) {
-                    String ${entity.property} = DateUtils.getDateStr((Date)${injectClassName}Map.get("${entity.property}"), "yyyy-MM-dd HH:mm:ss");
-                    ${injectClassName}Map.put("${entity.property}", ${entity.property});
+				#foreach( $columnModel in $columnList )
+                #if(${columnModel.javaType} == "Date")
+                if (StringUtil.hasText(StringUtil.trim(${injectClassName}Map.get("${columnModel.property}")))) {
+                    String ${columnModel.property} = DateUtils.getDateStr((Date)${injectClassName}Map.get("${columnModel.property}"), "yyyy-MM-dd HH:mm:ss");
+                    ${injectClassName}Map.put("${columnModel.property}", ${columnModel.property});
                 }
                 #end
                 #end

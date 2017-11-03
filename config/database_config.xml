@@ -34,7 +34,7 @@
 <!--   <entry key="tableName">mwt_truck_gps_log</entry> -->
   
   <!-- 表主键列名称 -->
-  <entry key="pkName">id</entry>
+<!--   <entry key="pkName">id</entry> -->
   
   <!-- 数据库名称 -->
   <entry key="dataBaseName">pk_member</entry>

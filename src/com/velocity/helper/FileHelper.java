@@ -19,7 +19,7 @@ import com.velocity.utils.StringUtil;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class FileHelper {
 
-	// private static String outputPath = "";
+	
 	/**
 	 * 是否生成文件
 	 */
@@ -94,12 +94,10 @@ public class FileHelper {
 					// System.out.println("原输出文件名称:" + fileName);
 					// 格式化文件名称
 					fileName = format(fileName, "1");
-					// System.out.println("实际输出文件名称:" + fileName);
+					 System.out.println("实际输出文件名称:" + fileName);
 					try {
 						// 格式化文件内容
-						// GeneratorVelocityHelper.outPutFile(sourceTempeletePath,
-						// outRoot + fileName,
-						// FileHelper.tableModel.columnList);
+						GeneratorVelocityHelper.outPutFile(sourceTempeletePath, outRoot + fileName, FileHelper.tableModel.columnList);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

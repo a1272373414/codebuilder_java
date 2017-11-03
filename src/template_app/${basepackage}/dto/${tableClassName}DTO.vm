@@ -6,20 +6,20 @@ import org.springframework.web.servlet.pojos.PrintableAndSerializeableDTO;
 public class ${tableClassName}DTO extends PrintableAndSerializeableDTO {
 	private static final long serialVersionUID = 1L;
 	
-	#foreach( $entity in $entityList )
-	/**  ${entity.columnComment}*/
-	private ${entity.javaType} ${entity.property};
+	#foreach( $columnModel in $columnList )
 	
+	/**  ${columnModel.columnComment}*/
+	private ${columnModel.javaType} ${columnModel.property};
 	#end
 
-	#foreach( $entity in $entityList )
+	#foreach( $columnModel in $columnList )
 	
-	public ${entity.javaType} get${entity.methodName}() {
-		return ${entity.property};
+	public ${columnModel.javaType} get${columnModel.methodName}() {
+		return ${columnModel.property};
 	}
 
-	public void set${entity.methodName}(${entity.javaType} ${entity.property}) {
-		this.${entity.property} =${entity.property};
+	public void set${columnModel.methodName}(${columnModel.javaType} ${columnModel.property}) {
+		this.${columnModel.property} =${columnModel.property};
 	}
 	#end
 }

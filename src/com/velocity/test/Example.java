@@ -16,7 +16,7 @@ import com.velocity.utils.FileModel;
  */
 public class Example {
 	public static void main(String[] args) {
-		File f = new File(Example.class.getResource("/").getPath() + File.separator + "template_app2" + File.separator);
+		File f = new File(Example.class.getResource("/").getPath() + File.separator + "template_app" + File.separator);
 		FileModel fielModel = new FileModel();
 		TableModel tableModel2 = GeneratorVelocityHelper.databaseParam.tableList.get(0);
 		List<TableModel> list = new ArrayList<TableModel>();

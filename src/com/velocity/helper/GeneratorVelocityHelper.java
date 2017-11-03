@@ -134,7 +134,7 @@ public class GeneratorVelocityHelper {
 		properties.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader"); // 设置velocity资源加载方式为file时的处理类
 		VelocityEngine velocityEngine = new VelocityEngine(properties); // 实例化一个VelocityEngine对象
 		VelocityContext context = new VelocityContext();// 实例化一个VelocityContext
-		Iterator ite = xmlParams.entrySet().iterator();
+		Iterator ite = FileHelper.paramLibrary.entrySet().iterator();
 		while (ite.hasNext()) {
 			Entry entry = (Entry) ite.next();
 			String key = StringUtilsExt.trim(entry.getKey());
