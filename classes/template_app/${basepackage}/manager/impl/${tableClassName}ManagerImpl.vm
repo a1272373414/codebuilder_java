@@ -1,0 +1,69 @@
+package ${basepackage}.manager.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+import org.utils.StringUtil;
+
+import ${basepackage}.dto.${tableClassName}DTO;
+import ${basepackage}.manager.${tableClassName}Manager;
+import ${basepackage}.service.${tableClassName}Service;
+
+@Service("${injectClassName}Manager")
+public class ${tableClassName}ManagerImpl implements ${tableClassName}Manager{
+	
+	@Resource
+	private ${tableClassName}Service ${injectClassName}Service;
+	
+	public ${tableClassName}DTO get${tableClassName}ById(Long id) {
+		return ${injectClassName}Service.get${tableClassName}ById(id);
+	}
+
+	public List<${tableClassName}DTO> get${tableClassName}List(Map<Object, Object> condition) {
+		return ${injectClassName}Service.get${tableClassName}List(condition);
+	}
+
+	public long get${tableClassName}Count(Map<Object, Object> condition) {
+		return ${injectClassName}Service.get${tableClassName}Count(condition);
+	}
+
+	public List<Long> add${tableClassName}(List<${tableClassName}DTO> ${injectClassName}DTOList)throws Exception {
+		return ${injectClassName}Service.add${tableClassName}(${injectClassName}DTOList);
+	}
+
+	public long add${tableClassName}(${tableClassName}DTO ${injectClassName}DTO) {
+		return ${injectClassName}Service.add${tableClassName}(${injectClassName}DTO);
+	}
+
+	public long update${tableClassName}(${tableClassName}DTO ${injectClassName}DTO) {
+		return ${injectClassName}Service.update${tableClassName}(${injectClassName}DTO);
+	}
+
+    public void update${tableClassName}(List<${tableClassName}DTO> ${injectClassName}DTOList)throws Exception {
+		${injectClassName}Service.update${tableClassName}(${injectClassName}DTOList);
+	}
+
+	public boolean delete${tableClassName}(Map<Object, Object> condition) {
+		boolean flag =false;
+		String id = StringUtil.trim(condition.get("id"));
+		if (StringUtil.hasText(id)) {
+			${injectClassName}Service.delete${tableClassName}(Long.valueOf(id));
+			flag=true;
+		}
+		return flag;
+	}
+
+	public boolean deleteBatch${tableClassName}(Map<Object, Object> condition) {
+		boolean flag =false;
+		String ids = StringUtil.trim(condition.get("ids"));
+		if (StringUtil.hasText(ids)) {
+			${injectClassName}Service.deleteBatch${tableClassName}(ids);
+			flag=true;
+		}
+		return flag;
+	}
+
+}

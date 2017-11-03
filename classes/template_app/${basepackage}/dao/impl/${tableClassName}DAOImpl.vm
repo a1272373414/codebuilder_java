@@ -1,0 +1,112 @@
+package ${basepackage}.dao.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
+import org.springframework.stereotype.Service;
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import ${basepackage}.dao.${tableClassName}DAO;
+import ${basepackage}.dto.${tableClassName}DTO;
+import com.kz.utils.DBContextHolder;
+import com.kz.utils.BatchCUDInterface;
+import com.kz.utils.BatchCUDUtil;
+
+@Service("${injectClassName}DAO")
+public class ${tableClassName}DAOImpl extends SqlMapClientDaoSupport implements ${tableClassName}DAO{
+	
+	public ${tableClassName}DTO get${tableClassName}ById(Long id) {
+                DBContextHolder.setRType();
+		${tableClassName}DTO result = null;
+		result = (${tableClassName}DTO)this.getSqlMapClientTemplate().queryForObject("${modelName}-${injectClassName}.get${tableClassName}ById", id);
+		DBContextHolder.clearDBType();
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<${tableClassName}DTO> get${tableClassName}List(Map<Object,Object> condition) {
+                DBContextHolder.setRType();
+		List<${tableClassName}DTO> result = null;
+		result = (List<${tableClassName}DTO>)this.getSqlMapClientTemplate().queryForList("${modelName}-${injectClassName}.get${tableClassName}List", condition);
+		DBContextHolder.clearDBType();
+		return result;
+	}
+
+	public long get${tableClassName}Count(Map<Object,Object> condition) {
+                DBContextHolder.setRType();
+		long result = 0;
+		result = ((Long)this.getSqlMapClientTemplate().queryForObject("${modelName}-${injectClassName}.get${tableClassName}Count", condition)).longValue();
+		DBContextHolder.clearDBType();
+		return result;
+	}
+
+	public long add${tableClassName}(${tableClassName}DTO ${injectClassName}DTO) {
+		DBContextHolder.setWType();
+		long result = 0;
+		result = (Long) this.getSqlMapClientTemplate().insert("${modelName}-${injectClassName}.add${tableClassName}", ${injectClassName}DTO);
+		DBContextHolder.clearDBType();
+		return result;
+	}
+	
+	public List<Long> add${tableClassName}(final List<${tableClassName}DTO> ${injectClassName}DTOList) throws Exception{
+	    final List<Long> idList = new ArrayList<Long>();
+	    DBContextHolder.setWType();
+        final SqlMapClient client = this.getSqlMapClientTemplate().getSqlMapClient();
+        BatchCUDUtil.exeBatchCUD4IbatisAutoTran(client, new BatchCUDInterface() {
+            
+            @Override
+            public void doBatchCUD() throws Exception {
+                for(${tableClassName}DTO  ${injectClassName}DTO : ${injectClassName}DTOList){
+                    Long id = (Long) client.insert("${modelName}-${injectClassName}.batchAdd${tableClassName}", ${injectClassName}DTO);
+                    idList.add(id);
+                }
+                
+            }
+        });
+        DBContextHolder.clearDBType();
+        return idList;
+    }
+
+	public long update${tableClassName}(${tableClassName}DTO ${injectClassName}DTO) {
+		DBContextHolder.setWType();
+		long result = 0;
+		result = this.getSqlMapClientTemplate().update("${modelName}-${injectClassName}.update${tableClassName}", ${injectClassName}DTO);
+		DBContextHolder.clearDBType();
+		return result;
+	}
+	
+	public void update${tableClassName}(final List<${tableClassName}DTO> ${injectClassName}DTOList)throws Exception  {
+		DBContextHolder.setWType();
+        final SqlMapClient client = this.getSqlMapClientTemplate().getSqlMapClient();
+        BatchCUDUtil.executeBatchCUD4Ibatis(client, new BatchCUDInterface() {
+            
+            @Override
+            public void doBatchCUD() throws Exception {
+                for(${tableClassName}DTO  ${injectClassName}DTO : ${injectClassName}DTOList){
+                    client.update("${modelName}-${injectClassName}.update${tableClassName}",  ${injectClassName}DTO);
+                }
+                
+            }
+        });
+        DBContextHolder.clearDBType();
+    }
+
+	public long delete${tableClassName}(Long id) {
+		DBContextHolder.setWType();
+		long result = 0;
+		result = this.getSqlMapClientTemplate().delete("${modelName}-${injectClassName}.delete${tableClassName}", id);
+		DBContextHolder.clearDBType();
+		return result;
+	}
+
+	public long deleteBatch${tableClassName}(String ids) {
+		DBContextHolder.setWType();
+		long result = 0;
+		result = this.getSqlMapClientTemplate().delete("${modelName}-${injectClassName}.deleteBatch${tableClassName}", ids);
+		DBContextHolder.clearDBType();
+		return result;
+	}
+
+}

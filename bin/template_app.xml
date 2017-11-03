@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<properties>
+  <!-- 基础包名称 -->
+  <entry key="basepackage">com.kz.logistics</entry>
+  
+  <!--模块名称 -->
+  <entry key="modelName">logistics</entry>
+  
+  <!--项目名称 -->
+  <entry key="projectName">pk-member-app</entry>
+  
+  <!-- 类作者 -->
+  <entry key="author"></entry>
+  
+  <!-- 类描述 -->
+  <entry key="describe">提煤单表</entry>
+  
+  <!-- 创建时间 -->
+  <entry key="createtime"></entry>
+  
+  <!-- 请求controller中列表数据的url -->
+  <entry key="controllerRequestUrl">/coalBill/coalBill.do</entry>
+  
+  <!-- 请求controller后显示列表数据的jsp所在的文件夹路径 -->
+  <entry key="jspPath">business/logistics/coalBill</entry>
+  
+  <!-- 类名称 -->
+  <entry key="className">MwtCoalBill</entry>
+  
+  <!--注入类名称 -->
+  <entry key="injectClassName">mwtCoalBill</entry>
+  
+  <!-- 表名称<config_table中的key> -->
+  <entry key="tableName">mwt_truck_gps_log</entry>
+  
+  <!-- 表主键列名称 -->
+  <entry key="pkName">id</entry>
+  
+  <!-- 数据库名称 -->
+  <entry key="dataBaseName">pk_order</entry>
+  
+  <!-- 数据库驱动 -->
+  <entry key="jdbc_driver">com.mysql.jdbc.Driver</entry>
+  
+  <!-- 数据库URL -->
+  <entry key="jdbc_url">jdbc:mysql://47.94.215.21:3316/pk_order?useUnicode=true&amp;characterEncoding=UTF-8</entry>
+  
+  <!-- 用户名 -->
+  <entry key="jdbc_username">pk_order</entry>
+  
+  <!-- 密码 -->
+  <entry key="jdbc_password">pk_order</entry>
+  
+  <!-- 输出根目录 -->
+  <entry key="outRoot">./generator-output</entry>
+</properties>

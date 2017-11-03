@@ -1,0 +1,56 @@
+package ${basepackage}.service.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import ${basepackage}.dao.${tableClassName}DAO;
+import ${basepackage}.dto.${tableClassName}DTO;
+import ${basepackage}.service.${tableClassName}Service;
+
+@Service("${injectClassName}Service")
+public class ${tableClassName}ServiceImpl implements ${tableClassName}Service {
+	
+	@Resource
+	private ${tableClassName}DAO ${injectClassName}DAO;
+	
+	public ${tableClassName}DTO get${tableClassName}ById(Long id) {
+		return ${injectClassName}DAO.get${tableClassName}ById(id);
+	}
+
+	public List<${tableClassName}DTO> get${tableClassName}List(Map<Object, Object> condition) {
+		return ${injectClassName}DAO.get${tableClassName}List(condition);
+	}
+
+	public long get${tableClassName}Count(Map<Object, Object> condition) {
+		return ${injectClassName}DAO.get${tableClassName}Count(condition);
+	}
+
+	public long add${tableClassName}(${tableClassName}DTO ${injectClassName}DTO) {
+		return ${injectClassName}DAO.add${tableClassName}(${injectClassName}DTO);
+	}
+	
+	public List<Long> add${tableClassName}(List<${tableClassName}DTO> ${injectClassName}DTOList)throws Exception {
+		return ${injectClassName}DAO.add${tableClassName}(${injectClassName}DTOList);
+	}
+
+	public long update${tableClassName}(${tableClassName}DTO ${injectClassName}DTO) {
+		return ${injectClassName}DAO.update${tableClassName}(${injectClassName}DTO);
+	}
+	
+	public void update${tableClassName}(List<${tableClassName}DTO> ${injectClassName}DTOList)throws Exception {
+		${injectClassName}DAO.update${tableClassName}(${injectClassName}DTOList);
+	}
+
+	public long delete${tableClassName}(Long id) {
+		return ${injectClassName}DAO.delete${tableClassName}(id);
+	}
+
+	public long deleteBatch${tableClassName}(String ids) {
+		return ${injectClassName}DAO.deleteBatch${tableClassName}(ids);
+	}
+
+}

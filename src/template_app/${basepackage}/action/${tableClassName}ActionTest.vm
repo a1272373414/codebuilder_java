@@ -1,0 +1,29 @@
+package test.${basepackage}.action;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import test.BaseTester;
+
+import ${basepackage}.dao.${tableClassName}DAO;
+import ${basepackage}.dto.${tableClassName}DTO;
+
+public class ${tableClassName}ActionTest extends BaseTester {
+	${tableClassName}Action action = null;
+
+	@Before
+	public void setUp() throws Exception {
+		action = (${tableClassName}Action) context.getBean("${injectClassName}Action");
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void testCreateRandom() throws Exception {
+		${tableClassName}DTO dto = new ${tableClassName}DTO();
+		//System.out.println("result=" + result);
+	}
+}

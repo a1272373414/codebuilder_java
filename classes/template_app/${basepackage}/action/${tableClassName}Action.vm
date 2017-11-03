@@ -1,0 +1,212 @@
+package ${basepackage}.action;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.web.servlet.action.AbstractAction;
+import org.springframework.web.servlet.exception.ServiceRuntimeException;
+import org.springframework.web.servlet.pojos.ServiceRequest;
+import org.springframework.web.servlet.pojos.ServiceResponse;
+import org.utils.BeanMapUtils;
+import org.utils.DateUtils;
+import org.utils.StringUtil;
+
+import ${basepackage}.dto.${tableClassName}DTO;
+import ${basepackage}.manager.${tableClassName}Manager;
+
+public class ${tableClassName}Action extends AbstractAction {
+	private static final Log logger = LogFactory.getLog(${tableClassName}Action.class);
+
+	@Resource
+	private ${tableClassName}Manager ${injectClassName}Manager;
+	
+	@SuppressWarnings("unchecked")
+	public ServiceResponse perform(ServiceRequest request) throws ServiceRuntimeException {
+		ServiceResponse response = new ServiceResponse();
+		Map<Object, Object> condition = (Map<Object, Object>) request.getRequestObject();
+		String op = StringUtil.trim(condition.get("op").toString());
+		Map<Object, Object> model = new HashMap<Object, Object>();
+		try {
+			if (op.equals("get${tableClassName}List")) {
+				int pageIndex = StringUtil.getAsInt(StringUtil.trim(condition.get("pageIndex")));
+				int pageSize = StringUtil.getAsInt(StringUtil.trim(condition.get("pageSize")));
+				int rowCount = StringUtil.getAsInt(StringUtil.trim(condition.get("rowCount")));
+				String createTime_begin=StringUtil.trim(condition.get("createTime_begin"));
+				String createTime_end=StringUtil.trim(condition.get("createTime_end"));
+				Map<Object,Object> queryFilter=(HashMap<Object,Object>)condition.get("queryFilter");
+				Map<Object,Object> map = new HashMap<Object,Object>();
+				if (pageIndex == -1 || pageSize == -1) {
+					map.put("pageNo", null);
+					map.put("pageSize", null);
+				}else {
+					map.put("pageNo", pageIndex * pageSize);
+					map.put("pageSize", pageSize);
+				}
+				if(StringUtil.hasText(createTime_begin)){
+					map.put("createTime_begin",DateUtils.reverse2Date(createTime_begin+" 00:00:00"));
+				}
+				if(StringUtil.hasText(createTime_end)){
+					map.put("createTime_end",DateUtils.reverse2Date(createTime_end+" 23:59:59"));
+				}
+				if(queryFilter != null && queryFilter.size()> 0){
+					map.putAll(queryFilter);
+				}
+				List<${tableClassName}DTO> ${injectClassName}List = ${injectClassName}Manager.get${tableClassName}List(map);
+				List<Map<Object,Object>> ${injectClassName}s=new ArrayList<Map<Object,Object>>(${injectClassName}List.size());
+				if (${injectClassName}List != null && ${injectClassName}List.size() > 0) {
+					for(int i = 0; i < ${injectClassName}List.size(); i++){
+						Map<Object, Object> ${injectClassName}Map = BeanMapUtils.getBean2Map(${injectClassName}List.get(i));
+						#foreach( $entity in $entityList )
+							#if(${entity.javaType} == "Date")
+							   if (StringUtil.hasText(StringUtil.trim(${injectClassName}Map.get("${entity.property}")))) {
+								String ${entity.property} = DateUtils.getDateStr((Date)${injectClassName}Map.get("${entity.property}"), "yyyy-MM-dd HH:mm:ss");
+								${injectClassName}Map.put("${entity.property}", ${entity.property});
+							   }
+						    #end
+						#end
+						${injectClassName}s.add(${injectClassName}Map);
+					}
+				}
+				long count = 0;
+				if (rowCount == 1) {
+					count = ${injectClassName}Manager.get${tableClassName}Count(map);
+				}
+				model.put("rowCount", count);
+				model.put("data", ${injectClassName}s);
+				model.put("state", 0);
+				model.put("message", "success");
+			}else if (op.equals("get${tableClassName}Count")) {
+				int pageIndex = StringUtil.getAsInt(StringUtil.trim(condition.get("pageIndex")));
+				int pageSize = StringUtil.getAsInt(StringUtil.trim(condition.get("pageSize")));
+				String createTime_begin=StringUtil.trim(condition.get("createTime_begin"));
+				String createTime_end=StringUtil.trim(condition.get("createTime_end"));
+				Map<Object,Object> queryFilter=(HashMap<Object,Object>)condition.get("queryFilter");
+				Map<Object,Object> map = new HashMap<Object,Object>();
+				if (pageIndex == -1 || pageSize == -1) {
+					map.put("pageNo", null);
+					map.put("pageSize", null);
+				}else {
+					map.put("pageNo", pageIndex * pageSize);
+					map.put("pageSize", pageSize);
+				}
+				if(StringUtil.hasText(createTime_begin)){
+					map.put("createTime_begin",DateUtils.reverse2Date(createTime_begin+" 00:00:00"));
+				}
+				if(StringUtil.hasText(createTime_end)){
+					map.put("createTime_end",DateUtils.reverse2Date(createTime_end+" 23:59:59"));
+				}
+				if(queryFilter != null && queryFilter.size()> 0){
+					map.putAll(queryFilter);
+				}
+				long count = 0;
+				count = ${injectClassName}Manager.get${tableClassName}Count(map);
+				model.put("data", count);
+				model.put("state", 0);
+				model.put("message", "success");
+			}else if (op.equals("update${tableClassName}")) {				
+				String data = StringUtil.trim(condition.get("data"));
+				if (StringUtil.hasText(data)) {
+					Map<Object,Object> datamap = (Map<Object,Object>) JSONObject.toBean(JSONObject.fromObject(data), Map.class);
+					${tableClassName}DTO ${injectClassName}DTO=(${tableClassName}DTO)BeanMapUtils.getMap2Bean(datamap, ${tableClassName}DTO.class);
+					${injectClassName}Manager.update${tableClassName}(${injectClassName}DTO);
+				}
+				model.put("state", 0);
+				model.put("message", "success");
+			}else if(op.equals("batchUpdate${tableClassName}")){
+                String data = StringUtil.trim(condition.get("data"));
+                if (StringUtil.hasText(data)) {
+                    List<Map<Object,Object>> dataMapList = ( List<Map<Object,Object>>)JSONArray.fromObject(data);
+                    if(dataMapList != null && !dataMapList.isEmpty()){
+                      List<${tableClassName}DTO> ${injectClassName}DTOList = new ArrayList<${tableClassName}DTO>();
+                      for(Map<Object, Object> datamap : dataMapList){
+                           ${tableClassName}DTO ${injectClassName}DTO = (${tableClassName}DTO) BeanMapUtils.getMap2Bean(datamap, ${tableClassName}DTO.class);
+                           ${injectClassName}DTOList.add(${injectClassName}DTO);
+                      }
+                      ${injectClassName}Manager.update${tableClassName}(${injectClassName}DTOList);
+                      
+                      model.put("state", 0);
+                      model.put("message", "success");
+                    }else{
+                      model.put("state", 1);
+                      model.put("message", "fail");
+                    }
+                  
+                }else{
+                   model.put("state", 1);
+                   model.put("message", "fail");
+                }
+            }else if(op.equals("add${tableClassName}")){
+				String data = StringUtil.trim(condition.get("data"));
+				if (StringUtil.hasText(data)) {
+					Map<Object,Object> datamap = (Map<Object,Object>) JSONObject.toBean(JSONObject.fromObject(data), Map.class);
+					${tableClassName}DTO ${injectClassName}DTO=(${tableClassName}DTO)BeanMapUtils.getMap2Bean(datamap, ${tableClassName}DTO.class);
+					${injectClassName}Manager.add${tableClassName}(${injectClassName}DTO);
+				}
+				model.put("state", 0);
+				model.put("message", "success");
+			}else if(op.equals("batchAdd${tableClassName}")){
+                String data = StringUtil.trim(condition.get("data"));
+                if (StringUtil.hasText(data)) {
+                    List<Map<Object,Object>> dataMapList = ( List<Map<Object,Object>>) JSONArray.fromObject(data);
+                    if(dataMapList != null && !dataMapList.isEmpty()){
+                      List<${tableClassName}DTO> ${injectClassName}DTOList = new ArrayList<${tableClassName}DTO>();
+                      for(Map<Object, Object> datamap : dataMapList){
+                           ${tableClassName}DTO ${injectClassName}DTO = (${tableClassName}DTO) BeanMapUtils.getMap2Bean(datamap, ${tableClassName}DTO.class);
+                           ${injectClassName}DTOList.add(${injectClassName}DTO);
+                      }
+                      ${injectClassName}Manager.add${tableClassName}(${injectClassName}DTOList);
+                      
+                      model.put("state", 0);
+                      model.put("message", "success");
+                    }else{
+                      model.put("state", 1);
+                      model.put("message", "fail");
+                    }
+                  
+                }else{
+                   model.put("state", 1);
+                   model.put("message", "fail");
+                }
+            }else if(op.equals("delete${tableClassName}")){
+				${injectClassName}Manager.delete${tableClassName}(condition);
+				model.put("state", 0);
+				model.put("message", "success");
+			}else if(op.equals("deleteBatch${tableClassName}")){
+				${injectClassName}Manager.deleteBatch${tableClassName}(condition);
+				model.put("state", 0);
+				model.put("message", "success");
+			}else if(op.equals("get${tableClassName}ById")){
+				Long id = StringUtil.getAsLong(StringUtil.trim(condition.get("id")));
+				${tableClassName}DTO ${injectClassName}DTO = ${injectClassName}Manager.get${tableClassName}ById(id);
+				Map<Object,Object> ${injectClassName}Map = BeanMapUtils.getBean2Map(${injectClassName}DTO);
+				#foreach( $entity in $entityList )
+                #if(${entity.javaType} == "Date")
+                if (StringUtil.hasText(StringUtil.trim(${injectClassName}Map.get("${entity.property}")))) {
+                    String ${entity.property} = DateUtils.getDateStr((Date)${injectClassName}Map.get("${entity.property}"), "yyyy-MM-dd HH:mm:ss");
+                    ${injectClassName}Map.put("${entity.property}", ${entity.property});
+                }
+                #end
+                #end
+				model.put("data", ${injectClassName}Map);
+				model.put("state", 0);
+				model.put("message", "success");
+			}
+		} catch (Exception e) {
+			logger.error("${tableClassName}Action exception:", e);
+			model.put("state", 1);
+			model.put("message", e.getMessage());
+		}
+		response.setModel(model);
+		return response;
+	}
+}

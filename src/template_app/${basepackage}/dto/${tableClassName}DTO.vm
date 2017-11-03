@@ -1,0 +1,25 @@
+package ${basepackage}.dto;
+
+import java.util.*;
+import org.springframework.web.servlet.pojos.PrintableAndSerializeableDTO;
+
+public class ${tableClassName}DTO extends PrintableAndSerializeableDTO {
+	private static final long serialVersionUID = 1L;
+	
+	#foreach( $entity in $entityList )
+	/**  ${entity.columnComment}*/
+	private ${entity.javaType} ${entity.property};
+	
+	#end
+
+	#foreach( $entity in $entityList )
+	
+	public ${entity.javaType} get${entity.methodName}() {
+		return ${entity.property};
+	}
+
+	public void set${entity.methodName}(${entity.javaType} ${entity.property}) {
+		this.${entity.property} =${entity.property};
+	}
+	#end
+}

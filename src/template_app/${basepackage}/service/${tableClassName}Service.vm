@@ -1,0 +1,27 @@
+package ${basepackage}.service;
+
+import java.util.List;
+import java.util.Map;
+
+import ${basepackage}.dto.${tableClassName}DTO;
+
+public interface ${tableClassName}Service {
+
+	public ${tableClassName}DTO get${tableClassName}ById(Long id);
+
+	public List<${tableClassName}DTO> get${tableClassName}List(Map<Object, Object> condition);
+	
+	public long get${tableClassName}Count(Map<Object, Object> condition);
+
+	public long add${tableClassName}(${tableClassName}DTO ${injectClassName}DTO);
+	
+	public List<Long> add${tableClassName}(List<${tableClassName}DTO> ${injectClassName}DTOList)throws Exception;
+
+	public long update${tableClassName}(${tableClassName}DTO ${injectClassName}DTO);
+	
+	public void update${tableClassName}(List<${tableClassName}DTO> ${injectClassName}DTOList)throws Exception;
+
+	public long delete${tableClassName}(Long id);
+
+	public long deleteBatch${tableClassName}(String ids);
+}
